@@ -32,4 +32,17 @@ public class TelaPrincipalController {
             e.printStackTrace();
         }
     }
+
+    public void abrirTelaMeusUsuarios() {
+        try {
+            FXMLLoader fxmlLoad = new FXMLLoader(getClass().getResource("/br/pucpr/projeto/Usuario/MeusUsuarios.fxml"));
+            Scene scene = new Scene(fxmlLoad.load());
+            Stage stage = new Stage();
+            stage.setTitle("My Wallet - Meus Usuarios");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

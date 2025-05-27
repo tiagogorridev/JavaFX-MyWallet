@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="br.pucpr.projeto.Usuario.EditarUsuarioController" spacing="15" alignment="CENTER">
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label text="Editar Usuário" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <Label text="Nome do Usuário:" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="inputNomeUsuario" promptText="Ex: João"/>
+
+    <Label text="Email do Usuário:" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="inputEmailUsuario" promptText="Ex: joao@exemplo.com"/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Salvar" onAction="#salvarAlteracoes" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="120"/>
+        <Button text="Cancelar" onAction="#voltarParaUsuarios" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="120"/>
+    </HBox>
+</VBox>

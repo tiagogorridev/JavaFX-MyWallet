@@ -13,8 +13,8 @@
 
     <Label text="Bem-vindo ao My Wallet!" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
-    <Label fx:id="optionLogin"/>
-    <Button text="Login" onAction="#abrirTelaMinhasMetas"/>
+    <Label fx:id="optionUsuarios"/>
+    <Button text="Meus Usuários" onAction="#abrirTelaMeusUsuarios"/>
 
     <Label fx:id="optionCarteiras"/>
     <Button text="Minhas Carteiras" onAction="#abrirTelaMinhasCarteiras"/>
