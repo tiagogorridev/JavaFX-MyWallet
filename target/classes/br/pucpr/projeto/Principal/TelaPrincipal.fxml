@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="br.pucpr.projeto.Principal.TelaPrincipalController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label text="Bem-vindo ao My Wallet!" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <Label fx:id="optionLogin"/>
+    <Button text="Login" onAction="#abrirTelaMinhasMetas"/>
+
+    <Label fx:id="optionCarteiras"/>
+    <Button text="Minhas Carteiras" onAction="#abrirTelaMinhasCarteiras"/>
+
+    <Label fx:id="optionAtivos"/>
+    <Button text="Meus Ativos" onAction="#abrirTelaMinhasMetas"/>
+
+    <Label fx:id="optionMetas"/>
+    <Button text="Minhas metas" onAction="#abrirTelaMinhasMetas"/>
+
+</VBox>

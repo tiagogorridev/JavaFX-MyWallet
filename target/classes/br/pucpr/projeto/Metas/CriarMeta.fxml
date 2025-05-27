@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="br.pucpr.projeto.Metas.CriarMetaController" spacing="15" alignment="CENTER">
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label text="Qual é a sua meta?" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="inputNome" promptText="Ex: Viagem para Europa"/>
+
+    <Label text="Qual é o valor da sua meta?" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="inputValorFinal" promptText="Ex: 5000.00"/>
+
+    <Label text="Qual é o valor que você possui?" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="inputValorInicial" promptText="Ex: 500.00"/>
+
+    <Label text="Qual foi a data de início da sua meta?" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="inputDataInicial" promptText="Ex: 01/01/2025 ou 2025-01-01"/>
+
+    <Label text="Quando que deseja atingir essa meta?" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="inputDataFinal" promptText="Ex: 31/12/2025 ou 2025-12-31"/>
+
+    <Button text="Enviar" onAction="#enviarMeta" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="120"/>
+</VBox>
