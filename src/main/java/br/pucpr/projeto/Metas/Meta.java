@@ -2,6 +2,7 @@ package br.pucpr.projeto.Metas;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Meta implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -12,7 +13,6 @@ public class Meta implements Serializable {
     private double valorMeta;
     private LocalDate dataFinal;
 
-
     public Meta(int id, String nome, LocalDate dataInicial, double valorAtual, double valorMeta, LocalDate dataFinal) {
         this.id = id;
         this.nome = nome;
@@ -20,6 +20,15 @@ public class Meta implements Serializable {
         this.valorAtual = valorAtual;
         this.valorMeta = valorMeta;
         this.dataFinal = dataFinal;
+    }
+
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -34,7 +43,7 @@ public class Meta implements Serializable {
         return valorAtual;
     }
 
-    public void setValorInicial(double valorAtual) {
+    public void setValorAtual(double valorAtual) {
         this.valorAtual = valorAtual;
     }
 
@@ -62,12 +71,37 @@ public class Meta implements Serializable {
         this.valorMeta = valorMeta;
     }
 
-    @Override
-    public String toString() {
-        return String.format(
-                "ID: %d\nNome: %s\nData Inicial: %s\nValor Inicial: R$ %.2f\nValor Meta: R$ %.2f\nData Final: %s",
-                id, nome, dataInicial, valorAtual, valorMeta, dataFinal
-        );
+    // Métodos de cálculo
+    public double getProgresso() {
+        return valorMeta > 0 ? (valorAtual / valorMeta) * 100 : 0;
     }
 
+    public boolean isCompleta() {
+        return valorAtual >= valorMeta;
+    }
+
+    public boolean isVencida() {
+        return LocalDate.now().isAfter(dataFinal) && !isCompleta();
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        double progresso = getProgresso();
+        String status;
+
+        if (isCompleta()) {
+            status = "✓ COMPLETA";
+        } else if (isVencida()) {
+            status = "✗ VENCIDA";
+        } else {
+            status = String.format("%.1f%%", progresso);
+        }
+
+        return String.format(
+                "Nome: %s\nStatus: %s\nProgresso: R$ %.2f / R$ %.2f\nPeríodo: %s → %s",
+                nome, status, valorAtual, valorMeta,
+                dataInicial.format(formatter), dataFinal.format(formatter)
+        );
+    }
 }

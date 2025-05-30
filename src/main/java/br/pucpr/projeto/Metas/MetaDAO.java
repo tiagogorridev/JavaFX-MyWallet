@@ -5,48 +5,60 @@ import java.util.ArrayList;
 
 public class MetaDAO {
 
-    // Constante com a pasta e o nome do arquivo para persistir o objeto
-    private static final String arquivo = "Metas.dat";
+    private static final String ARQUIVO = "Metas.dat";
 
-    // Escreve uma lista de objetos no arquivo
-    public static void salvarLista(ArrayList<Meta> Metas) {
-        try {
-            File arq = new File(arquivo);
-            if (!arq.exists()) {
-                arq.createNewFile();
-            }
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arq));
-            oos.writeObject(Metas);
-            oos.close();
-            System.out.println("Lista de Metas salva com sucesso.");
-        } catch (FileNotFoundException e) {
-            System.err.println("Erro ao salvar lista: " + e.getMessage());
+    public static void salvarLista(ArrayList<Meta> metas) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ARQUIVO))) {
+            oos.writeObject(metas);
         } catch (IOException e) {
-            System.err.println("Erro ao salvar lista: " + e.getMessage());
+            System.err.println("Erro ao salvar: " + e.getMessage());
         }
     }
 
-    // Lê uma lista de objetos do arquivo
     public static ArrayList<Meta> lerLista() {
-        ArrayList<Meta> lista = new ArrayList<>();
-        try  {
-            File arq = new File(arquivo);
-            if (arq.exists()) {
-                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(arquivo));
-                lista = (ArrayList<Meta>) ois.readObject();
-                ois.close();
-            }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ARQUIVO))) {
+            return (ArrayList<Meta>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Erro ao ler lista: " + e.getMessage());
+            return new ArrayList<>();
         }
-        return lista;
     }
 
-    // Adiciona uma nova Meta à lista e regrava o arquivo
     public static void adicionarMeta(Meta novaMeta) {
-        ArrayList<Meta> Metas = lerLista();
-        Metas.add(novaMeta);
-        salvarLista(Metas);
+        ArrayList<Meta> metas = lerLista();
+        metas.add(novaMeta);
+        salvarLista(metas);
     }
 
+    public static void removerMetaPorId(int id) {
+        ArrayList<Meta> metas = lerLista();
+        metas.removeIf(m -> m.getId() == id);
+        salvarLista(metas);
+    }
+
+    public static void atualizarMeta(Meta metaAtualizada) {
+        ArrayList<Meta> metas = lerLista();
+        for (int i = 0; i < metas.size(); i++) {
+            if (metas.get(i).getId() == metaAtualizada.getId()) {
+                metas.set(i, metaAtualizada);
+                break;
+            }
+        }
+        salvarLista(metas);
+    }
+
+    public static Meta buscarPorId(int id) {
+        ArrayList<Meta> metas = lerLista();
+        return metas.stream()
+                .filter(meta -> meta.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static int gerarProximoId() {
+        ArrayList<Meta> metas = lerLista();
+        return metas.stream()
+                .mapToInt(Meta::getId)
+                .max()
+                .orElse(0) + 1;
+    }
 }

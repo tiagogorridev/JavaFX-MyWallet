@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="br.pucpr.projeto.Metas.CriarMetaController" spacing="15" alignment="CENTER">
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="br.pucpr.projeto.Metas.MetaController"
+      spacing="15" alignment="CENTER">
 
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20" left="20" right="20" top="20"/>
     </padding>
 
-    <Label text="Qual é a sua meta?" style="-fx-font-weight: bold;"/>
-    <TextField fx:id="inputNome" promptText="Ex: Viagem para Europa"/>
+    <Label text="Criar Nova Meta" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
-    <Label text="Qual é o valor da sua meta?" style="-fx-font-weight: bold;"/>
-    <TextField fx:id="inputValorFinal" promptText="Ex: 5000.00"/>
+    <Label text="Nome da Meta:" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="inputNomeMeta" promptText="Ex: Comprar um carro"/>
 
-    <Label text="Qual é o valor que você possui?" style="-fx-font-weight: bold;"/>
-    <TextField fx:id="inputValorInicial" promptText="Ex: 500.00"/>
+    <Label text="Data Inicial:" style="-fx-font-weight: bold;"/>
+    <DatePicker fx:id="inputDataInicial"/>
 
-    <Label text="Qual foi a data de início da sua meta?" style="-fx-font-weight: bold;"/>
-    <TextField fx:id="inputDataInicial" promptText="Ex: 01/01/2025 ou 2025-01-01"/>
+    <Label text="Valor Atual:" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="inputValorAtual" promptText="Ex: 5000.00"/>
 
-    <Label text="Quando que deseja atingir essa meta?" style="-fx-font-weight: bold;"/>
-    <TextField fx:id="inputDataFinal" promptText="Ex: 31/12/2025 ou 2025-12-31"/>
+    <Label text="Valor da Meta:" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="inputValorMeta" promptText="Ex: 50000.00"/>
 
-    <Button text="Enviar" onAction="#enviarMeta" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="120"/>
+    <Label text="Data Final:" style="-fx-font-weight: bold;"/>
+    <DatePicker fx:id="inputDataFinal"/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Criar" onAction="#enviarMeta"
+                style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="120"/>
+        <Button text="Voltar" onAction="#voltarParaMetas"
+                style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="120"/>
+    </HBox>
 </VBox>
