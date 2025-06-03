@@ -19,9 +19,6 @@
     <Label fx:id="optionCarteiras"/>
     <Button text="Minhas Carteiras" onAction="#abrirTelaMinhasCarteiras"/>
 
-    <Label fx:id="optionAtivos"/>
-    <Button text="Meus Ativos"/>
-
     <Label fx:id="optionMetas"/>
     <Button text="Minhas metas" onAction="#abrirTelaMinhasMetas"/>
 
