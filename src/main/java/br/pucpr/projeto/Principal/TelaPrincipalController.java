@@ -45,4 +45,17 @@ public class TelaPrincipalController {
             e.printStackTrace();
         }
     }
+
+    public void abrirtTelaMinhasNoticias() {
+        try {
+            FXMLLoader fxmlLoad = new FXMLLoader(getClass().getResource("/br/pucpr/projeto/Noticia/MinhasNoticias.fxml"));
+            Scene scene = new Scene(fxmlLoad.load());
+            Stage stage = new Stage();
+            stage.setTitle("My Wallet - Minhas Noticias");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

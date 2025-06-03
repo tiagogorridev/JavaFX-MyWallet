@@ -25,4 +25,7 @@
     <Label fx:id="optionMetas"/>
     <Button text="Minhas metas" onAction="#abrirTelaMinhasMetas"/>
 
+    <Label fx:id="optionNoticias"/>
+    <Button text="Minhas Noticias" onAction="#abrirtTelaMinhasNoticias"/>
+
 </VBox>

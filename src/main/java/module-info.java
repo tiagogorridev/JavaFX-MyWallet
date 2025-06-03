@@ -10,6 +10,8 @@ module br.pucpr.projeto {
     exports br.pucpr.projeto.Principal;
     exports br.pucpr.projeto.Carteira;
     exports br.pucpr.projeto.Usuario;
+    exports br.pucpr.projeto.Noticia;
+
 
     // Open packages for JavaFX FXML reflection
     opens br.pucpr.projeto to javafx.fxml;
@@ -17,6 +19,8 @@ module br.pucpr.projeto {
     opens br.pucpr.projeto.Principal to javafx.fxml;
     opens br.pucpr.projeto.Carteira to javafx.fxml;
     opens br.pucpr.projeto.Usuario to javafx.fxml;
+    opens br.pucpr.projeto.Noticia to javafx.fxml;
+
 
     // Removi as referências ao pacote dominio que não existe mais
 }
