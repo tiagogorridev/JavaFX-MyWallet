@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-
 public class TelaInicialController {
     public void abrirTelaPrincipal(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TelaPrincipal.fxml"));

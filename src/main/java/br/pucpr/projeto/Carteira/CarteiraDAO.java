@@ -8,15 +8,20 @@ public class CarteiraDAO {
     private static final String arquivo = "Carteiras.dat";
 
     public static void salvarLista(ArrayList<Carteira> carteiras) {
+        // Cria um ObjectOutputStream que grava objetos no arquivo
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(arquivo))) {
+            // Escreve a lista de objetos no arquivo
             oos.writeObject(carteiras);
         } catch (IOException e) {
             System.err.println("Erro ao salvar: " + e.getMessage());
         }
     }
 
+    // Lê a lista de carteiras do arquivo especificado
     public static ArrayList<Carteira> lerLista() {
+        // Cria um ObjectInputStream que lê objetos do arquivo
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(arquivo))) {
+            // Lê o objeto do arquivo
             return (ArrayList<Carteira>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             return new ArrayList<>();
@@ -44,7 +49,6 @@ public class CarteiraDAO {
                 break;
             }
         }
-
         salvarLista(carteiras);
     }
 }
