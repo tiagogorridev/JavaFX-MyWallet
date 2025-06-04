@@ -45,7 +45,7 @@ public class CarteiraDAO {
 
         for (int i = 0; i < carteiras.size(); i++) {
             if (carteiras.get(i).getId() == carteiraAtualizada.getId()) {
-                carteiras.set(i, carteiraAtualizada);
+                carteiras.set(i, carteiraAtualizada); // substitui antiga pela nova
                 break;
             }
         }
