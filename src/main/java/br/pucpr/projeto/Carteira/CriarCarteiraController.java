@@ -59,7 +59,9 @@ public class CriarCarteiraController {
     @FXML
     public void voltarParaMinhasCarteiras(ActionEvent event) {
         try {
+            // Carrega fxml
             Parent root = FXMLLoader.load(getClass().getResource("MinhasCarteiras.fxml"));
+            // Faz cast explicito para node e stage
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setTitle("My Wallet - Minhas Carteiras");
             stage.setScene(new Scene(root, 640, 480));

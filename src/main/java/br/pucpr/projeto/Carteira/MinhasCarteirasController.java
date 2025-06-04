@@ -31,8 +31,7 @@ public class MinhasCarteirasController implements Initializable {
             ArrayList<Carteira> carteiras = CarteiraDAO.lerLista();
             lista.getItems().addAll(carteiras);
         } catch (RuntimeException e) {
-            AlertUtils.mostrarErro("Erro ao carregar",
-                    "Não foi possível carregar as carteiras: " + e.getMessage());
+            AlertUtils.mostrarErro("Erro ao carregar", "Não foi possível carregar as carteiras: " + e.getMessage());
         }
     }
 
