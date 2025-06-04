@@ -46,14 +46,6 @@ public class MetaDAO {
         salvarLista(metas);
     }
 
-    public static Meta buscarPorId(int id) {
-        ArrayList<Meta> metas = lerLista();
-        return metas.stream()
-                .filter(meta -> meta.getId() == id)
-                .findFirst()
-                .orElse(null);
-    }
-
     public static int gerarProximoId() {
         ArrayList<Meta> metas = lerLista();
         return metas.stream()

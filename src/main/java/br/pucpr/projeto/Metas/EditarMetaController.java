@@ -8,20 +8,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class MetaController implements Initializable {
+public class EditarMetaController implements Initializable {
 
-    @FXML
-    private ListView<Meta> lista;
     @FXML
     private TextField inputNomeMeta;
     @FXML
@@ -37,123 +33,8 @@ public class MetaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if (lista != null) {
-            atualizarMetas();
-        }
-
-        if (inputDataInicial != null && inputDataFinal != null) {
-            inputDataInicial.setValue(LocalDate.now());
-            inputDataFinal.setValue(LocalDate.now().plusMonths(1));
-        }
+        // Inicialização específica para edição, se necessário
     }
-
-    // ========== TELA PRINCIPAL - MINHAS METAS ==========
-
-    @FXML
-    public void criarMeta(ActionEvent event) throws IOException {
-        navegarPara(event, "CriarMeta.fxml", "My Wallet - Criar Meta");
-    }
-
-    @FXML
-    public void editarMeta(ActionEvent event) {
-        Meta metaSelecionada = lista.getSelectionModel().getSelectedItem();
-
-        if (metaSelecionada == null) {
-            AlertUtils.mostrarAvisoSimples("Por favor, selecione uma meta para editar!");
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditarMeta.fxml"));
-            Parent root = loader.load();
-
-            MetaController controller = loader.getController();
-            controller.carregarDadosMeta(metaSelecionada);
-
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setTitle("My Wallet - Editar Meta");
-            stage.setScene(new Scene(root, 640, 480));
-
-        } catch (IOException e) {
-            AlertUtils.mostrarErro("Erro", "Não foi possível abrir a tela de edição: " + e.getMessage());
-        }
-    }
-
-    @FXML
-    public void apagarMeta() {
-        Meta metaSelecionada = lista.getSelectionModel().getSelectedItem();
-
-        if (metaSelecionada == null) {
-            AlertUtils.mostrarAvisoSimples("Por favor, selecione uma meta para excluir!");
-            return;
-        }
-
-        String statusMeta = metaSelecionada.isCompleta() ? "COMPLETA" :
-                metaSelecionada.isVencida() ? "VENCIDA" :
-                        String.format("%.1f%% concluída", metaSelecionada.getProgresso());
-
-        String mensagem = String.format(
-                "Tem certeza que deseja excluir a meta:\n\n" +
-                        "Nome: %s\n" +
-                        "Status: %s\n" +
-                        "Progresso: R$ %.2f / R$ %.2f\n\n" +
-                        "Esta ação não pode ser desfeita!",
-                metaSelecionada.getNome(),
-                statusMeta,
-                metaSelecionada.getValorAtual(),
-                metaSelecionada.getValorMeta()
-        );
-
-        if (AlertUtils.confirmar(mensagem)) {
-            try {
-                MetaDAO.removerMetaPorId(metaSelecionada.getId());
-                atualizarMetas();
-                AlertUtils.mostrarSucesso("Meta excluída com sucesso!");
-            } catch (Exception e) {
-                AlertUtils.mostrarErro("Erro", "Erro ao excluir meta: " + e.getMessage());
-            }
-        }
-    }
-
-    @FXML
-    public void atualizarMetas() {
-        try {
-            lista.getItems().clear();
-            ArrayList<Meta> metas = MetaDAO.lerLista();
-            lista.getItems().addAll(metas);
-        } catch (Exception e) {
-            AlertUtils.mostrarErro("Erro", "Não foi possível atualizar a lista: " + e.getMessage());
-        }
-    }
-
-    // ========== CRIAR META ==========
-
-    @FXML
-    public void enviarMeta(ActionEvent event) {
-        try {
-            if (!validarCampos()) return;
-
-            String nome = inputNomeMeta.getText().trim();
-            LocalDate dataInicial = inputDataInicial.getValue();
-            LocalDate dataFinal = inputDataFinal.getValue();
-
-            // Usar método auxiliar para converter valores com vírgula
-            double valorAtual = converterValor(inputValorAtual.getText().trim());
-            double valorMeta = converterValor(inputValorMeta.getText().trim());
-
-            int novoId = MetaDAO.gerarProximoId();
-            Meta novaMeta = new Meta(novoId, nome, dataInicial, valorAtual, valorMeta, dataFinal);
-            MetaDAO.adicionarMeta(novaMeta);
-
-            AlertUtils.mostrarSucesso("Meta criada com sucesso!");
-            voltarParaMetas(event);
-
-        } catch (Exception e) {
-            AlertUtils.mostrarErro("Erro", "Erro ao criar meta: " + e.getMessage());
-        }
-    }
-
-    // ========== EDITAR META ==========
 
     public void carregarDadosMeta(Meta meta) {
         this.metaParaEditar = meta;
@@ -189,6 +70,15 @@ public class MetaController implements Initializable {
 
         } catch (Exception e) {
             AlertUtils.mostrarErro("Erro", "Erro ao atualizar meta: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void voltarParaMetas(ActionEvent event) {
+        try {
+            navegarPara(event, "MinhasMetas.fxml", "My Wallet - Minhas Metas");
+        } catch (IOException e) {
+            AlertUtils.mostrarErro("Erro", "Erro ao voltar para metas: " + e.getMessage());
         }
     }
 
@@ -365,14 +255,5 @@ public class MetaController implements Initializable {
         Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.setTitle(titulo);
         stage.setScene(new Scene(root, 640, 480));
-    }
-
-    @FXML
-    public void voltarParaMetas(ActionEvent event) {
-        try {
-            navegarPara(event, "MinhasMetas.fxml", "My Wallet - Minhas Metas");
-        } catch (IOException e) {
-            AlertUtils.mostrarErro("Erro", "Erro ao voltar para metas: " + e.getMessage());
-        }
     }
 }

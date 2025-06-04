@@ -13,6 +13,7 @@ public class Meta implements Serializable {
     private double valorMeta;
     private LocalDate dataFinal;
 
+
     public Meta(int id, String nome, LocalDate dataInicial, double valorAtual, double valorMeta, LocalDate dataFinal) {
         this.id = id;
         this.nome = nome;
@@ -73,7 +74,11 @@ public class Meta implements Serializable {
 
     // Métodos de cálculo
     public double getProgresso() {
-        return valorMeta > 0 ? (valorAtual / valorMeta) * 100 : 0;
+        if (valorMeta > 0) {
+            return (valorAtual / valorMeta) * 100;
+        } else {
+            return 0;
+        }
     }
 
     public boolean isCompleta() {
@@ -91,9 +96,9 @@ public class Meta implements Serializable {
         String status;
 
         if (isCompleta()) {
-            status = "✓ COMPLETA";
+            status = "COMPLETA";
         } else if (isVencida()) {
-            status = "✗ VENCIDA";
+            status = "VENCIDA";
         } else {
             status = String.format("%.1f%%", progresso);
         }
