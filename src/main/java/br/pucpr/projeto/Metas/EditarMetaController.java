@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -33,7 +34,30 @@ public class EditarMetaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Inicialização específica para edição, se necessário
+        // Desabilitar digitação nos campos de data (apenas seleção por calendário)
+        desabilitarDigitacaoData(inputDataInicial);
+        desabilitarDigitacaoData(inputDataFinal);
+    }
+
+    /**
+     * Desabilita a digitação nos campos DatePicker, permitindo apenas seleção via calendário
+     */
+    private void desabilitarDigitacaoData(DatePicker datePicker) {
+        // Desabilitar a digitação no campo de texto do DatePicker
+        datePicker.getEditor().setEditable(false);
+
+        // Opcional: Adicionar estilo visual para indicar que não é editável
+        datePicker.getEditor().setStyle("-fx-background-color: #f4f4f4;");
+
+        // Bloquear eventos de teclado no editor
+        datePicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            event.consume(); // Bloqueia qualquer digitação
+        });
+
+        // Bloquear eventos de teclas especiais (Delete, Backspace, etc.)
+        datePicker.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            event.consume(); // Bloqueia todas as teclas
+        });
     }
 
     public void carregarDadosMeta(Meta meta) {
@@ -167,6 +191,19 @@ public class EditarMetaController implements Initializable {
             return false;
         }
 
+        // Validar se contém letras nos campos de valor
+        if (contemLetras(valorAtualStr)) {
+            AlertUtils.mostrarAvisoSimples("O campo 'Valor Atual' não pode conter letras!\nUse apenas números e vírgulas para decimais.");
+            inputValorAtual.requestFocus();
+            return false;
+        }
+
+        if (contemLetras(valorMetaStr)) {
+            AlertUtils.mostrarAvisoSimples("O campo 'Valor da Meta' não pode conter letras!\nUse apenas números e vírgulas para decimais.");
+            inputValorMeta.requestFocus();
+            return false;
+        }
+
         // Validar conversão dos valores numéricos
         try {
             double valorAtual = converterValor(valorAtualStr);
@@ -214,7 +251,7 @@ public class EditarMetaController implements Initializable {
         return true;
     }
 
-    private String normalizarNumero(String numero) {
+    public String normalizarNumero(String numero) {
         if (numero == null || numero.trim().isEmpty()) {
             return "0";
         }
@@ -248,6 +285,25 @@ public class EditarMetaController implements Initializable {
         }
 
         return numero;
+    }
+
+    /**
+     * Verifica se uma string contém letras
+     */
+    private boolean contemLetras(String texto) {
+        if (texto == null || texto.trim().isEmpty()) {
+            return false;
+        }
+
+        // Remove espaços, R$, vírgulas e pontos para verificar apenas letras
+        String textoLimpo = texto.trim()
+                .replace("R$", "")
+                .replace(" ", "")
+                .replace(",", "")
+                .replace(".", "");
+
+        // Verifica se contém alguma letra
+        return textoLimpo.matches(".*[a-zA-ZÀ-ÿ].*");
     }
 
     private void navegarPara(ActionEvent event, String arquivo, String titulo) throws IOException {

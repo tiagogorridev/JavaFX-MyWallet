@@ -203,7 +203,7 @@ public class CriarMetaController implements Initializable {
         return true;
     }
 
-    private String normalizarNumero(String numero) {
+    public String normalizarNumero(String numero) {
         if (numero == null || numero.trim().isEmpty()) {
             return "0";
         }
