@@ -43,7 +43,7 @@ public class Usuario implements Serializable {
     public String toString() {
 
         return "ID: " + id +
-                "Nome: " + nomeUsuario +
-                "Email: " + emailUsuario;
+                "; Nome: " + nomeUsuario +
+                "; Email: " + emailUsuario;
     }
 }

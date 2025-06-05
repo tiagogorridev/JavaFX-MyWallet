@@ -10,6 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EditarUsuarioController {
 
@@ -19,6 +22,8 @@ public class EditarUsuarioController {
     private TextField inputEmailUsuario;
 
     private Usuario usuarioParaEditar;
+
+    private static final Pattern pattern = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
 
     public void carregarDadosUsuario(Usuario usuario) {
         this.usuarioParaEditar = usuario;
@@ -35,8 +40,11 @@ public class EditarUsuarioController {
             String email = inputEmailUsuario.getText().trim();
 
             if (nome.isEmpty() || email.isEmpty()) {
-                AlertUtils.mostrarAvisoSimples("Todos os campos devem ser preenchidos!");
-                return;
+                throw new RuntimeException("Todos os campos devem ser preenchidos");
+            }
+
+            if (!pattern.matcher(email).matches()) {
+                throw new RuntimeException("Email inválido");
             }
 
             // Atualiza os dados da carteira (mantém o email original)
@@ -58,7 +66,7 @@ public class EditarUsuarioController {
     @FXML
     public void voltarParaUsuarios(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("MeusUsuarios.fxml"));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MeusUsuarios.fxml")));
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root, 640, 480));
         } catch (IOException e) {
