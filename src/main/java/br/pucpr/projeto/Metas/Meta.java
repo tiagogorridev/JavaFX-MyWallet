@@ -104,8 +104,8 @@ public class Meta implements Serializable {
         }
 
         return String.format(
-                "Nome: %s\nStatus: %s\nProgresso: R$ %.2f / R$ %.2f\nPeríodo: %s → %s",
-                nome, status, valorAtual, valorMeta,
+                "ID: %s\nNome: %s\nStatus: %s\nProgresso: R$ %.2f / R$ %.2f\nPeríodo: %s → %s",
+                id, nome, status, valorAtual, valorMeta,
                 dataInicial.format(formatter), dataFinal.format(formatter)
         );
     }

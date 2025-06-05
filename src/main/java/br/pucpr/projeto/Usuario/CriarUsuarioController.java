@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -40,7 +42,7 @@ public class CriarUsuarioController {
             }
 
             // Criar e salvar usuario
-            int novoId = UsuarioDAO.lerLista().size() + 1;
+            int novoId = UsuarioDAO.lerLista().stream().mapToInt(Usuario::getId).max().orElse(0) + 1;
             Usuario novoUsuario = new Usuario(novoId, nome, email);
             UsuarioDAO.adicionarUsuario(novoUsuario);
 

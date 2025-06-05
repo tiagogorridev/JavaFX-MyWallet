@@ -3,7 +3,7 @@ package br.pucpr.projeto.Usuario;
 import java.io.*;
 import java.util.ArrayList;
 
-public class UsuarioDAO {
+public class    UsuarioDAO {
 
     private static final String arquivo = "Usuarios.dat";
 
