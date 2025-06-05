@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class CriarUsuarioController {
 
@@ -21,6 +23,8 @@ public class CriarUsuarioController {
     @FXML
     private TextField inputEmailUsuario;
 
+    private static final Pattern pattern = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
+
     @FXML
     public void enviarUsuario(ActionEvent event) {
         try {
@@ -28,8 +32,11 @@ public class CriarUsuarioController {
             String email = inputEmailUsuario.getText().trim();
 
             if (nome.isEmpty() || email.isEmpty()) {
-                AlertUtils.mostrarAvisoSimples("Todos os campos devem ser preenchidos!");
-                return;
+                throw new RuntimeException("Todos os campos devem ser preenchidos!");
+            }
+
+            if (!pattern.matcher(email).matches()) {
+                throw new RuntimeException("Email inválido");
             }
 
             // Criar e salvar usuario
@@ -40,8 +47,6 @@ public class CriarUsuarioController {
             AlertUtils.mostrarSucesso("Usuário criado com sucesso!");
             voltarParaUsuarios(event);
 
-        } catch (NumberFormatException e) {
-            AlertUtils.mostrarErroSimples("Valor inválido! Use apenas números.");
         } catch (Exception e) {
             AlertUtils.mostrarErro("Erro", e.getMessage());
         }
@@ -50,7 +55,7 @@ public class CriarUsuarioController {
     @FXML
     public void voltarParaUsuarios(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("MeusUsuarios.fxml"));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MeusUsuarios.fxml")));
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root, 640, 480));
         } catch (IOException e) {

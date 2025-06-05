@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MeusUsuariosController implements Initializable {
@@ -27,7 +28,7 @@ public class MeusUsuariosController implements Initializable {
 
     @FXML
     public void criarUsuario(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("CriarUsuario.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("CriarUsuario.fxml")));
         Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.setTitle("My Wallet - Criar Usuário");
         stage.setScene(new Scene(root, 640, 480));
@@ -37,12 +38,11 @@ public class MeusUsuariosController implements Initializable {
     public void editarUsuario(ActionEvent event) {
         Usuario usuarioSelecionado = lista.getSelectionModel().getSelectedItem();
 
-        if (usuarioSelecionado == null) {
-            AlertUtils.mostrarAvisoSimples("Por favor, selecione um usuário para editar!");
-            return;
-        }
-
         try {
+            if (usuarioSelecionado == null) {
+                throw new RuntimeException("Por favor, selecione um ususário para editar!");
+            }
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EditarUsuarios.fxml"));
             Parent root = loader.load();
 
@@ -55,7 +55,9 @@ public class MeusUsuariosController implements Initializable {
             stage.setScene(new Scene(root, 640, 480));
 
         } catch (IOException e) {
-            AlertUtils.mostrarErro("Erro", "Não foi possível abrir a tela de edição: " + e.getMessage());
+            AlertUtils.mostrarErro("Erro","Não foi possível abrir a tela de edição: " + e.getMessage());
+        } catch (Exception e) {
+            AlertUtils.mostrarAvisoSimples(e.getMessage());
         }
     }
 
