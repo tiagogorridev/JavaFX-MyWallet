@@ -31,7 +31,11 @@ public class MetaDAO {
 
     public static void removerMetaPorId(int id) {
         ArrayList<Meta> metas = lerLista();
-        metas.removeIf(m -> m.getId() == id);
+        for (int i = metas.size() - 1; i >= 0; i--) {
+            if (metas.get(i).getId() == id) {
+                metas.remove(i);
+            }
+        }
         salvarLista(metas);
     }
 
