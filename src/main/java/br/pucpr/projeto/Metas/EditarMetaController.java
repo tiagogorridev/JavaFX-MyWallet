@@ -34,7 +34,6 @@ public class EditarMetaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Desabilitar digitação nos campos de data (apenas seleção por calendário)
         desabilitarDigitacaoData(inputDataInicial);
         desabilitarDigitacaoData(inputDataFinal);
     }
