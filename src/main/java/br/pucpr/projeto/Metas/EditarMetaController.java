@@ -38,24 +38,17 @@ public class EditarMetaController implements Initializable {
         desabilitarDigitacaoData(inputDataFinal);
     }
 
-    /**
-     * Desabilita a digitação nos campos DatePicker, permitindo apenas seleção via calendário
-     */
-    private void desabilitarDigitacaoData(DatePicker datePicker) {
-        // Desabilitar a digitação no campo de texto do DatePicker
+    public void desabilitarDigitacaoData(DatePicker datePicker) {
         datePicker.getEditor().setEditable(false);
 
-        // Opcional: Adicionar estilo visual para indicar que não é editável
-        datePicker.getEditor().setStyle("-fx-background-color: #f4f4f4;");
+        datePicker.getEditor().setStyle("-fx-background-color: #808080;");
 
-        // Bloquear eventos de teclado no editor
         datePicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            event.consume(); // Bloqueia qualquer digitação
+            event.consume();
         });
 
-        // Bloquear eventos de teclas especiais (Delete, Backspace, etc.)
         datePicker.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            event.consume(); // Bloqueia todas as teclas
+            event.consume();
         });
     }
 
@@ -77,7 +70,6 @@ public class EditarMetaController implements Initializable {
             LocalDate dataInicial = inputDataInicial.getValue();
             LocalDate dataFinal = inputDataFinal.getValue();
 
-            // Usar método auxiliar para converter valores com vírgula
             double valorAtual = converterValor(inputValorAtual.getText().trim());
             double valorMeta = converterValor(inputValorMeta.getText().trim());
 
@@ -105,12 +97,8 @@ public class EditarMetaController implements Initializable {
         }
     }
 
-    // ========== MÉTODOS AUXILIARES ==========
 
-    /**
-     * Converte uma string com formato brasileiro (vírgula decimal) para double
-     */
-    private double converterValor(String valor) throws NumberFormatException {
+    public double converterValor(String valor) throws NumberFormatException {
         if (valor == null || valor.trim().isEmpty()) {
             return 0.0;
         }
@@ -119,8 +107,7 @@ public class EditarMetaController implements Initializable {
         return Double.parseDouble(valorNormalizado);
     }
 
-    private boolean validarCampos() {
-        // Verificar se os campos existem (evitar NullPointerException)
+    public boolean validarCampos() {
         if (inputNomeMeta == null || inputValorAtual == null ||
                 inputValorMeta == null || inputDataInicial == null || inputDataFinal == null) {
             AlertUtils.mostrarErroSimples("Erro interno: campos não inicializados!");
@@ -133,24 +120,20 @@ public class EditarMetaController implements Initializable {
         LocalDate dataInicial = inputDataInicial.getValue();
         LocalDate dataFinal = inputDataFinal.getValue();
 
-        // Tratar campos nulos como strings vazias
         if (nome == null) nome = "";
         if (valorAtualStr == null) valorAtualStr = "";
         if (valorMetaStr == null) valorMetaStr = "";
 
-        // Fazer trim apenas se não for nulo
         nome = nome.trim();
         valorAtualStr = valorAtualStr.trim();
         valorMetaStr = valorMetaStr.trim();
 
-        // Validar campo nome (deve aceitar texto, incluindo números)
         if (nome.isEmpty()) {
             AlertUtils.mostrarAvisoSimples("O nome da meta deve ser preenchido!");
             inputNomeMeta.requestFocus();
             return false;
         }
 
-        // Validar campos de valor
         if (valorAtualStr.isEmpty()) {
             AlertUtils.mostrarAvisoSimples("O valor atual deve ser preenchido!");
             inputValorAtual.requestFocus();
@@ -163,7 +146,6 @@ public class EditarMetaController implements Initializable {
             return false;
         }
 
-        // Validar datas
         if (dataInicial == null) {
             AlertUtils.mostrarAvisoSimples("A data inicial deve ser selecionada!");
             inputDataInicial.requestFocus();
@@ -176,21 +158,18 @@ public class EditarMetaController implements Initializable {
             return false;
         }
 
-        // Validar sequência de datas
         if (dataFinal.isBefore(dataInicial)) {
             AlertUtils.mostrarErroSimples("A data final deve ser posterior à data inicial!");
             inputDataFinal.requestFocus();
             return false;
         }
 
-        // Validar se as datas não são muito antigas
         if (dataInicial.isBefore(LocalDate.now().minusYears(10))) {
             AlertUtils.mostrarAvisoSimples("A data inicial não pode ser muito antiga!");
             inputDataInicial.requestFocus();
             return false;
         }
 
-        // Validar se contém letras nos campos de valor
         if (contemLetras(valorAtualStr)) {
             AlertUtils.mostrarAvisoSimples("O campo 'Valor Atual' não pode conter letras!\nUse apenas números e vírgulas para decimais.");
             inputValorAtual.requestFocus();
@@ -203,12 +182,10 @@ public class EditarMetaController implements Initializable {
             return false;
         }
 
-        // Validar conversão dos valores numéricos
         try {
             double valorAtual = converterValor(valorAtualStr);
             double valorMeta = converterValor(valorMetaStr);
 
-            // Validar se são números válidos (não NaN ou infinito)
             if (Double.isNaN(valorAtual) || Double.isInfinite(valorAtual)) {
                 AlertUtils.mostrarErroSimples("Valor atual inválido!");
                 inputValorAtual.requestFocus();
@@ -221,7 +198,6 @@ public class EditarMetaController implements Initializable {
                 return false;
             }
 
-            // Validar valores negativos e zero
             if (valorAtual < 0) {
                 AlertUtils.mostrarErroSimples("O valor atual não pode ser negativo!");
                 inputValorAtual.requestFocus();
@@ -234,7 +210,6 @@ public class EditarMetaController implements Initializable {
                 return false;
             }
 
-            // Validar valores muito grandes (evitar overflow)
             if (valorAtual > 999999999.99 || valorMeta > 999999999.99) {
                 AlertUtils.mostrarErroSimples("Os valores são muito grandes! Máximo: R$ 999.999.999,99");
                 return false;
@@ -286,10 +261,7 @@ public class EditarMetaController implements Initializable {
         return numero;
     }
 
-    /**
-     * Verifica se uma string contém letras
-     */
-    private boolean contemLetras(String texto) {
+    public boolean contemLetras(String texto) {
         if (texto == null || texto.trim().isEmpty()) {
             return false;
         }
@@ -305,7 +277,7 @@ public class EditarMetaController implements Initializable {
         return textoLimpo.matches(".*[a-zA-ZÀ-ÿ].*");
     }
 
-    private void navegarPara(ActionEvent event, String arquivo, String titulo) throws IOException {
+    public void navegarPara(ActionEvent event, String arquivo, String titulo) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource(arquivo));
         Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.setTitle(titulo);

@@ -15,7 +15,7 @@
 
     <ListView fx:id="lista" prefHeight="200.0" prefWidth="300.0"/>
     <HBox spacing="10" alignment="CENTER">
-        <Button text="Criar" onAction="#criarMeta"/>
+        <Button text="Criar"  onAction="#criarMeta"/>
         <Button text="Editar" onAction="#editarMeta"/>
         <Button text="Deletar" onAction="#apagarMeta"/>
     </HBox>

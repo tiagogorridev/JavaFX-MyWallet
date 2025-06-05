@@ -17,7 +17,7 @@
     <Label text="Nome da Meta:" style="-fx-font-weight: bold;"/>
     <TextField fx:id="inputNomeMeta" promptText="Ex: Comprar um carro"/>
 
-    <Label text="Data Inicial:" style="-fx-font-weight: bold;"/>
+    <Label text="Data Inicial:" style="-fx-font-weight: bold; "/>
     <DatePicker fx:id="inputDataInicial"/>
 
     <Label text="Valor Atual:" style="-fx-font-weight: bold;"/>

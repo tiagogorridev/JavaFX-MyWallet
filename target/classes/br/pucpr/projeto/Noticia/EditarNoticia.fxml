@@ -5,7 +5,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="br.pucpr.projeto.Noticia.NoticiaController"
+      fx:controller="br.pucpr.projeto.Noticia.EditarNoticiaController"
       spacing="15" alignment="CENTER">
 
     <padding>
@@ -32,7 +32,7 @@
     <HBox spacing="10" alignment="CENTER">
         <Button text="Salvar" onAction="#salvarAlteracoes"
                 style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="120"/>
-        <Button text="Voltar" onAction="#voltarParaNoticias"
+        <Button text="Voltar" onAction="#cancelarEdicao"
                 style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="120"/>
     </HBox>
 </VBox>
