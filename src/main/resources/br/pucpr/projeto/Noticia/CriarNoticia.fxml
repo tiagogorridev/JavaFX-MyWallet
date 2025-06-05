@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="br.pucpr.projeto.Noticia.NoticiaController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="br.pucpr.projeto.Noticia.CriarNoticiaController">
     <children>
         <VBox spacing="10" alignment="TOP_LEFT" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0"
               AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
