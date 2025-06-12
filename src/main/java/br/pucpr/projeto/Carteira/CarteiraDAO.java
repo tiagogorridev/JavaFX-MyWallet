@@ -17,11 +17,11 @@ public class CarteiraDAO {
         }
     }
 
-    // Lê a lista de carteiras do arquivo especificado
+    // Le a lista de carteiras do arquivo especificado
     public static ArrayList<Carteira> lerLista() {
         // Cria um ObjectInputStream que lê objetos do arquivo
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(arquivo))) {
-            // Lê o objeto do arquivo
+            // Le o objeto do arquivo
             return (ArrayList<Carteira>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             return new ArrayList<>();
