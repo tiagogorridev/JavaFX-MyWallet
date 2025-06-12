@@ -72,7 +72,6 @@ public class Meta implements Serializable {
         this.valorMeta = valorMeta;
     }
 
-    // Métodos de cálculo
     public double getProgresso() {
         if (valorMeta > 0) {
             return (valorAtual / valorMeta) * 100;

@@ -3,14 +3,9 @@ package br.pucpr.projeto.Metas;
 import br.pucpr.projeto.Alert.AlertUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,26 +31,9 @@ public class CriarMetaController implements Initializable {
             inputDataInicial.setValue(LocalDate.now());
             inputDataFinal.setValue(LocalDate.now().plusMonths(1));
 
-            desabilitarDigitacaoData(inputDataInicial);
-            desabilitarDigitacaoData(inputDataFinal);
+            MetaUtils.desabilitarDigitacaoData(inputDataInicial);
+            MetaUtils.desabilitarDigitacaoData(inputDataFinal);
         }
-    }
-
-
-    public void desabilitarDigitacaoData(DatePicker datePicker) {
-        datePicker.getEditor().setEditable(false);
-
-        datePicker.getEditor().setStyle("-fx-background-color: #808080;");
-
-        datePicker.getEditor().addEventFilter(KeyEvent.KEY_TYPED, event -> {
-            event.consume();
-        });
-
-        datePicker.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            event.consume(); // Bloqueia todas as teclas
-        });
-
-        datePicker.getEditor().setFocusTraversable(true);
     }
 
     @FXML
@@ -67,8 +45,8 @@ public class CriarMetaController implements Initializable {
             LocalDate dataInicial = inputDataInicial.getValue();
             LocalDate dataFinal = inputDataFinal.getValue();
 
-            double valorAtual = converterValor(inputValorAtual.getText().trim());
-            double valorMeta = converterValor(inputValorMeta.getText().trim());
+            double valorAtual = MetaUtils.converterValor(inputValorAtual.getText().trim());
+            double valorMeta = MetaUtils.converterValor(inputValorMeta.getText().trim());
 
             int novoId = MetaDAO.gerarProximoId();
             Meta novaMeta = new Meta(novoId, nome, dataInicial, valorAtual, valorMeta, dataFinal);
@@ -85,23 +63,13 @@ public class CriarMetaController implements Initializable {
     @FXML
     public void voltarParaMetas(ActionEvent event) {
         try {
-            navegarPara(event, "MinhasMetas.fxml", "My Wallet - Minhas Metas");
+            MetaUtils.navegarPara(event, "MinhasMetas.fxml", "My Wallet - Minhas Metas");
         } catch (IOException e) {
             AlertUtils.mostrarErro("Erro", "Erro ao voltar para metas: " + e.getMessage());
         }
     }
 
-
-    public double converterValor(String valor) throws NumberFormatException {
-        if (valor == null || valor.trim().isEmpty()) {
-            return 0.0;
-        }
-
-        String valorNormalizado = normalizarNumero(valor);
-        return Double.parseDouble(valorNormalizado);
-    }
-
-    public boolean validarCampos() {
+    private boolean validarCampos() {
         if (inputNomeMeta == null || inputValorAtual == null ||
                 inputValorMeta == null || inputDataInicial == null || inputDataFinal == null) {
             AlertUtils.mostrarErroSimples("Erro interno: campos não inicializados!");
@@ -164,30 +132,17 @@ public class CriarMetaController implements Initializable {
             return false;
         }
 
-        if (contemLetras(valorAtualStr)) {
-            AlertUtils.mostrarAvisoSimples("O campo 'Valor Atual' não pode conter letras!\nUse apenas números e vírgulas para decimais.");
-            inputValorAtual.requestFocus();
-            return false;
-        }
-
-        if (contemLetras(valorMetaStr)) {
-            AlertUtils.mostrarAvisoSimples("O campo 'Valor da Meta' não pode conter letras!\nUse apenas números e vírgulas para decimais.");
-            inputValorMeta.requestFocus();
-            return false;
-        }
-
-
         try {
-            double valorAtual = converterValor(valorAtualStr);
-            double valorMeta = converterValor(valorMetaStr);
+            double valorAtual = MetaUtils.converterValor(valorAtualStr);
+            double valorMeta = MetaUtils.converterValor(valorMetaStr);
 
-            if (Double.isNaN(valorAtual) || Double.isInfinite(valorAtual)) {
+            if (Double.isNaN(valorAtual)) {
                 AlertUtils.mostrarErroSimples("Valor atual inválido!");
                 inputValorAtual.requestFocus();
                 return false;
             }
 
-            if (Double.isNaN(valorMeta) || Double.isInfinite(valorMeta)) {
+            if (Double.isNaN(valorMeta)) {
                 AlertUtils.mostrarErroSimples("Valor da meta inválido!");
                 inputValorMeta.requestFocus();
                 return false;
@@ -224,56 +179,5 @@ public class CriarMetaController implements Initializable {
         }
 
         return true;
-    }
-
-    public String normalizarNumero(String numero) {
-        if (numero == null || numero.trim().isEmpty()) {
-            return "0";
-        }
-
-        numero = numero.trim()
-                .replace("R$", "")
-                .replace(" ", "");
-
-
-        numero = numero.replaceAll("[^\\d.,]", "");
-
-        if (numero.contains(",")) {
-            if (numero.contains(".") && numero.indexOf(".") < numero.lastIndexOf(",")) {
-                numero = numero.replaceAll("\\.", "").replace(",", ".");
-            } else {
-                numero = numero.replace(",", ".");
-            }
-        }
-
-        else if (numero.contains(".")) {
-            String[] partes = numero.split("\\.");
-            if (partes.length > 1 && partes[partes.length - 1].length() > 2) {
-                numero = numero.replace(".", "");
-            }
-        }
-
-        return numero;
-    }
-
-    public boolean contemLetras(String texto) {
-        if (texto == null || texto.trim().isEmpty()) {
-            return false;
-        }
-
-        String textoLimpo = texto.trim()
-                .replace("R$", "")
-                .replace(" ", "")
-                .replace(",", "")
-                .replace(".", "");
-
-        return textoLimpo.matches(".*[a-zA-ZÀ-ÿ].*");
-    }
-
-    public void navegarPara(ActionEvent event, String arquivo, String titulo) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource(arquivo));
-        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-        stage.setTitle(titulo);
-        stage.setScene(new Scene(root, 640, 480));
     }
 }

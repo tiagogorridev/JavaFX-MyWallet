@@ -29,7 +29,7 @@ public class MostrarMetaController implements Initializable {
 
     @FXML
     public void criarMeta(ActionEvent event) throws IOException {
-        navegarPara(event, "CriarMeta.fxml", "My Wallet - Criar Meta");
+        MetaUtils.navegarPara(event, "CriarMeta.fxml", "My Wallet - Criar Meta");
     }
 
     @FXML
@@ -102,12 +102,5 @@ public class MostrarMetaController implements Initializable {
         } catch (Exception e) {
             AlertUtils.mostrarErro("Erro", "Não foi possível atualizar a lista: " + e.getMessage());
         }
-    }
-
-    public void navegarPara(ActionEvent event, String arquivo, String titulo) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource(arquivo));
-        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-        stage.setTitle(titulo);
-        stage.setScene(new Scene(root, 640, 480));
     }
 }
